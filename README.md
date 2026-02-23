@@ -43,35 +43,35 @@ The demo showcases:
 
 ```
 todo-app/
-├── backend/                          # Spring Boot Application
+├── backend/                          
 │   ├── src/main/java/com/todo/app/
-│   │   ├── TodoApplication.java      # Main entry point + data seeder
+│   │   ├── TodoApplication.java      
 │   │   ├── controller/
-│   │   │   └── TodoController.java   # REST API endpoints
+│   │   │   └── TodoController.java   
 │   │   ├── service/
-│   │   │   └── TodoService.java      # Business logic layer
+│   │   │   └── TodoService.java     
 │   │   ├── repository/
-│   │   │   └── TodoRepository.java   # JPA repository
+│   │   │   └── TodoRepository.java   
 │   │   ├── model/
-│   │   │   └── Todo.java             # JPA entity
+│   │   │   └── Todo.java             
 │   │   ├── dto/
-│   │   │   └── TodoDto.java          # Request / Response DTOs
+│   │   │   └── TodoDto.java          
 │   │   └── exception/
 │   │       ├── ResourceNotFoundException.java
 │   │       └── GlobalExceptionHandler.java
 │   ├── src/main/resources/
-│   │   └── application.properties    # H2, JPA, CORS config
-│   └── pom.xml                       # Maven dependencies
+│   │   └── application.properties    
+│   └── pom.xml                       
 │
-├── frontend/                         # React Application
+├── frontend/                         
 │   ├── src/
-│   │   ├── main.jsx                  # React entry point
-│   │   └── App.jsx                   # Main component (all-in-one)
+│   │   ├── main.jsx                 
+│   │   └── App.jsx                   
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
 │
-├── todo-app-demo.html                # 🎬 Animated demo (open in browser)
+├── todo-app-demo.html                
 └── README.md
 ```
 
