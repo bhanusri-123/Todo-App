@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Taskery — App Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f5f0e8;--warm:#faf8f3;--sand:#e8dfc8;
+  --terra:#c4622d;--terra-l:#e07a4a;--terra-p:#f5ddd0;
+  --sage:#6b7c5e;--sage-l:#8fa07f;
+  --charcoal:#2a2420;--muted:#9b8878;
+  --border:rgba(107,76,56,0.12);--shadow:rgba(42,36,32,0.08);
+  --display:'Playfair Display',serif;--body:'Cabinet Grotesk',sans-serif;--mono:'DM Mono',monospace;
+}
+body{background:#1a1a2e;font-family:var(--body);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;}
+.demo-wrap{width:100%;max-width:1100px;display:flex;flex-direction:column;align-items:center;gap:28px;}
+.banner{text-align:center;}
+.banner-label{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:#c8f542;text-transform:uppercase;margin-bottom:8px;}
+.banner-title{font-family:var(--display);font-size:clamp(36px,6vw,64px);font-weight:900;color:white;letter-spacing:-0.03em;line-height:1;}
+.banner-title span{color:#c4622d;font-style:italic;}
+.banner-sub{font-family:var(--mono);font-size:13px;color:rgba(255,255,255,0.4);margin-top:10px;}
+.tech-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+.pill{font-family:var(--mono);font-size:11px;padding:4px 14px;border-radius:99px;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);}
+.pill.hl{background:rgba(196,98,45,0.15);border-color:rgba(196,98,45,0.4);color:#e07a4a;}
+.browser{width:100%;background:#2d2d3d;border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.06);}
+.browser-bar{background:#252535;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.dots{display:flex;gap:6px;}
+.dot{width:12px;height:12px;border-radius:50%;}
+.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+.url-bar{flex:1;background:#1e1e2e;border-radius:6px;padding:6px 14px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,0.4);}
+.url-bar span{color:#c8f542;}
+.app-shell{display:grid;grid-template-columns:260px 1fr;height:580px;background:var(--cream);}
+.sidebar{background:var(--charcoal);padding:28px 24px;display:flex;flex-direction:column;gap:24px;overflow:hidden;}
+.brand-mark{width:36px;height:36px;border-radius:10px;background:var(--terra);display:grid;place-items:center;font-family:var(--display);font-size:18px;color:white;font-style:italic;box-shadow:0 6px 20px rgba(196,98,45,0.4);margin-bottom:4px;}
+.brand-name{font-family:var(--display);font-size:18px;font-weight:700;color:white;letter-spacing:-0.02em;}
+.brand-tag{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.s-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.stats-g{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
+.s-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;}
+.s-num{font-family:var(--display);font-size:22px;font-weight:900;color:white;line-height:1;transition:all 0.4s;}
+.s-num.accent{color:#e07a4a;}
+.s-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+.ring-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
+.ring-info-t{font-size:12px;font-weight:500;color:white;}
+.ring-info-s{font-size:10px;color:var(--muted);margin-top:2px;}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.45);margin-bottom:3px;transition:all 0.35s;}
+.nav-item.active{background:var(--terra);color:white;}
+.nav-dot{width:6px;height:6px;border-radius:50%;margin-right:8px;flex-shrink:0;display:inline-block;}
+.nav-count{font-size:10px;background:rgba(255,255,255,0.08);color:var(--muted);padding:2px 7px;border-radius:99px;transition:all 0.3s;}
+.nav-item.active .nav-count{background:rgba(255,255,255,0.25);color:white;}
+.main{padding:28px 32px;overflow:hidden;display:flex;flex-direction:column;gap:14px;position:relative;}
+.m-greeting{font-size:12px;color:var(--muted);}
+.m-title{font-family:var(--display);font-size:28px;font-weight:900;color:var(--charcoal);letter-spacing:-0.03em;line-height:1.1;}
+.m-title em{color:var(--terra);font-style:italic;}
+.add-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 12px var(--shadow);flex-shrink:0;transition:border-color 0.3s,box-shadow 0.3s;}
+.add-card.focused{border-color:rgba(196,98,45,0.4);box-shadow:0 4px 24px rgba(196,98,45,0.1);}
+.add-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.add-icon{width:32px;height:32px;background:var(--terra-p);border-radius:9px;display:grid;place-items:center;color:var(--terra);font-size:16px;flex-shrink:0;}
+.add-hl{font-family:var(--display);font-size:14px;font-weight:700;color:var(--charcoal);}
+.add-sub-t{font-size:10px;color:var(--muted);}
+.fake-inp{background:var(--warm);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:6px;transition:border-color 0.2s;}
+.fake-inp.active-inp{border-color:rgba(196,98,45,0.4);background:white;}
+.placeholder{color:var(--muted);font-weight:400;}
+.cursor{display:inline-block;width:1.5px;height:13px;background:var(--terra);margin-left:1px;animation:blink 1s infinite;vertical-align:middle;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.add-ftr{display:flex;justify-content:flex-end;margin-top:8px;}
+.add-btn-f{background:var(--terra);color:white;border:none;font-family:var(--body);font-weight:700;font-size:12px;padding:7px 16px;border-radius:9px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(196,98,45,0.35);}
+.add-btn-f.clicking{transform:scale(0.94);background:#e07a4a;}
+.todo-list-f{display:flex;flex-direction:column;gap:7px;overflow:hidden;}
+.todo-card-f{background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 2px 8px var(--shadow);position:relative;overflow:hidden;transition:all 0.4s;}
+.todo-card-f::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 3px 3px 0;background:var(--terra-p);transition:background 0.3s;}
+.todo-card-f.done-card{opacity:0.6;}
+.todo-card-f.done-card::before{background:#8fa07f;}
+.check-f{width:20px;height:20px;border-radius:50%;border:2px solid var(--sand);background:transparent;flex-shrink:0;margin-top:1px;display:grid;place-items:center;transition:all 0.3s;position:relative;}
+.check-f.checked{background:#6b7c5e;border-color:#6b7c5e;}
+.check-f.checked::after{content:'✓';position:absolute;color:white;font-size:10px;font-weight:900;}
+.todo-body-f{flex:1;min-width:0;}
+.todo-title-f{font-size:13px;font-weight:600;color:var(--charcoal);line-height:1.3;transition:all 0.3s;}
+.todo-card-f.done-card .todo-title-f{text-decoration:line-through;color:var(--muted);}
+.todo-desc-f{font-size:11px;color:var(--muted);margin-top:2px;}
+.todo-footer-f{display:flex;align-items:center;gap:6px;margin-top:6px;}
+.todo-date-f{font-size:10px;color:var(--muted);}
+.todo-pill-f{font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:99px;transition:all 0.3s;}
+.pill-done{background:rgba(107,124,94,0.12);color:#6b7c5e;}
+.pill-active{background:var(--terra-p);color:var(--terra);}
+.todo-actions-f{display:flex;gap:3px;opacity:0;transition:opacity 0.2s;}
+.todo-card-f:hover .todo-actions-f{opacity:1;}
+.act-f{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:transparent;font-size:11px;color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:all 0.2s;}
+.toast-area{position:absolute;bottom:16px;right:16px;display:flex;flex-direction:column;gap:6px;z-index:99;}
+.toast-f{background:var(--charcoal);color:white;padding:9px 14px;border-radius:10px;font-size:12px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,0.3);opacity:0;transform:translateY(8px);transition:all 0.3s;}
+.toast-f.show{opacity:1;transform:none;}
+.toast-add{border-left:3px solid #60a5fa;}
+.toast-done{border-left:3px solid #6b7c5e;}
+.toast-del{border-left:3px solid #e07a4a;}
+@keyframes cardIn{from{opacity:0;transform:translateY(-12px) scale(0.97);}to{opacity:1;transform:none;}}
+.new-card{animation:cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes cardOut{to{opacity:0;transform:translateX(24px);max-height:0;padding-top:0;padding-bottom:0;margin:0;border-width:0;}}
+.removing-card{animation:cardOut 0.38s forwards;}
+.bottom-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.b-badge{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:99px;padding:7px 16px;font-size:12px;color:rgba(255,255,255,0.5);}
+.b-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="demo-wrap">
+
+  <div class="banner">
+    <div class="banner-label">⬡ Portfolio Demo</div>
+    <div class="banner-title">Taskery — <span>Todo App</span></div>
+    <div class="banner-sub">// Full-Stack · Spring Boot + React · In-Memory H2 DB</div>
+    <div class="tech-pills">
+      <div class="pill hl">Spring Boot 3.2</div>
+      <div class="pill hl">React 18</div>
+      <div class="pill">H2 Database</div>
+      <div class="pill">REST API</div>
+      <div class="pill">JPA + Hibernate</div>
+      <div class="pill">Vite</div>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="url-bar">🔒 <span>localhost:3000</span>/todos</div>
+    </div>
+    <div class="app-shell">
+      <div class="sidebar">
+        <div>
+          <div class="brand-mark">t</div>
+          <div class="brand-name">Taskery</div>
+          <div class="brand-tag">Task Manager</div>
+        </div>
+        <div>
+          <div class="s-label">Overview</div>
+          <div class="stats-g">
+            <div class="s-card"><div class="s-num" id="totalNum">5</div><div class="s-lbl">Total</div></div>
+            <div class="s-card"><div class="s-num accent" id="activeNum">3</div><div class="s-lbl">Active</div></div>
+          </div>
+          <div class="ring-card">
+            <svg width="48" height="48" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+              <circle id="ringCircle" cx="40" cy="40" r="30" fill="none" stroke="#c4622d" stroke-width="5" stroke-linecap="round" transform="rotate(-90 40 40)" stroke-dasharray="188.5" stroke-dashoffset="113" style="transition:stroke-dashoffset 0.7s ease;"/>
+              <text x="40" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="white" id="ringPct">40%</text>
+            </svg>
+            <div><div class="ring-info-t">Completion</div><div class="ring-info-s">Keep going! 🌱</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="s-label">Filter</div>
+          <div id="nav-all" class="nav-item active"><span><span class="nav-dot" style="background:#c4622d"></span>All Tasks</span><span class="nav-count" id="nc-all">5</span></div>
+          <div id="nav-active" class="nav-item"><span><span class="nav-dot" style="background:#6b7c5e"></span>In Progress</span><span class="nav-count" id="nc-active">3</span></div>
+          <div id="nav-done" class="nav-item"><span><span class="nav-dot" style="background:#c8b89a"></span>Completed</span><span class="nav-count" id="nc-done">2</span></div>
+        </div>
+      </div>
+      <div class="main">
+        <div>
+          <div class="m-greeting">Good day 👋</div>
+          <div class="m-title">Your <em>tasks,</em> organized.</div>
+        </div>
+        <div class="add-card" id="addCard">
+          <div class="add-hdr">
+            <div class="add-icon">✦</div>
+            <div><div class="add-hl">New Task</div><div class="add-sub-t">What needs to get done?</div></div>
+          </div>
+          <div class="fake-inp" id="fakeInp">
+            <span class="placeholder" id="inpPlaceholder">Task title (required)…</span><span id="typedText"></span><span class="cursor" id="cursorEl" style="display:none;"></span>
+          </div>
+          <div class="fake-inp" style="font-size:12px;color:var(--muted);font-weight:400;">Add description (optional)…</div>
+          <div class="add-ftr"><button class="add-btn-f" id="addBtnF">+ Add Task</button></div>
+        </div>
+        <div class="todo-list-f" id="todoList">
+          <div class="todo-card-f done-card">
+            <div class="check-f checked"></div>
+            <div class="todo-body-f">
+              <div class="todo-title-f">Setup Spring Boot project</div>
+              <div class="todo-desc-f">Initialize Maven with required dependencies</div>
+              <div class="todo-footer-f"><span class="todo-date-f">Feb 21</span><span class="todo-pill-f pill-done">✓ Done</span></div>
+            </div>
+            <div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>
+          </div>
+          <div class="todo-card-f done-card">
+            <div class="check-f checked"></div>
+            <div class="todo-body-f">
+              <div class="todo-title-f">Design database schema</div>
+              <div class="todo-desc-f">Entity models and JPA relationships</div>
+              <div class="todo-footer-f"><span class="todo-date-f">Feb 22</span><span class="todo-pill-f pill-done">✓ Done</span></div>
+            </div>
+            <div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>
+          </div>
+          <div class="todo-card-f" id="card2">
+            <div class="check-f" id="check2"></div>
+            <div class="todo-body-f">
+              <div class="todo-title-f" id="title2">Implement REST API</div>
+              <div class="todo-desc-f">Controller, service and repository layers</div>
+              <div class="todo-footer-f"><span class="todo-date-f">Feb 23</span><span class="todo-pill-f pill-active" id="pill2">Active</span></div>
+            </div>
+            <div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>
+          </div>
+          <div class="todo-card-f" id="card3">
+            <div class="check-f"></div>
+            <div class="todo-body-f">
+              <div class="todo-title-f">Build React frontend</div>
+              <div class="todo-desc-f">Components with hooks and Axios</div>
+              <div class="todo-footer-f"><span class="todo-date-f">Feb 23</span><span class="todo-pill-f pill-active">Active</span></div>
+            </div>
+            <div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>
+          </div>
+          <div class="todo-card-f" id="card4">
+            <div class="check-f"></div>
+            <div class="todo-body-f">
+              <div class="todo-title-f">Write unit tests</div>
+              <div class="todo-desc-f">Target 80% coverage for service layer</div>
+              <div class="todo-footer-f"><span class="todo-date-f">Feb 24</span><span class="todo-pill-f pill-active">Active</span></div>
+            </div>
+            <div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>
+          </div>
+        </div>
+        <div class="toast-area">
+          <div class="toast-f toast-add" id="toast-add">Task added! 🌿</div>
+          <div class="toast-f toast-done" id="toast-done">Marked as done 🎉</div>
+          <div class="toast-f toast-del" id="toast-del">Task deleted</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="b-badge"><div class="b-dot" style="background:#4ade80;"></div>Backend: localhost:8080</div>
+    <div class="b-badge"><div class="b-dot" style="background:#60a5fa;"></div>Frontend: localhost:3000</div>
+    <div class="b-badge"><div class="b-dot" style="background:#fbbf24;"></div>H2 In-Memory DB</div>
+    <div class="b-badge"><div class="b-dot" style="background:#c4622d;"></div>Spring Boot 3.2 + React 18</div>
+  </div>
+
+</div>
+<script>
+let total=5,done=2,active=3;
+function updateStats(){
+  document.getElementById('totalNum').textContent=total;
+  document.getElementById('activeNum').textContent=active;
+  document.getElementById('nc-all').textContent=total;
+  document.getElementById('nc-active').textContent=active;
+  document.getElementById('nc-done').textContent=done;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('ringPct').textContent=pct+'%';
+  document.getElementById('ringCircle').style.strokeDashoffset=188.5-(pct/100)*188.5;
+}
+function showToast(id,dur=2200){
+  const t=document.getElementById(id);t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+function setNav(w){
+  ['all','active','done'].forEach(k=>document.getElementById('nav-'+k).className='nav-item'+(k===w?' active':''));
+}
+function doTypeTask(){
+  const card=document.getElementById('addCard');
+  const inp=document.getElementById('fakeInp');
+  const ph=document.getElementById('inpPlaceholder');
+  const typed=document.getElementById('typedText');
+  const cursor=document.getElementById('cursorEl');
+  card.classList.add('focused');inp.classList.add('active-inp');
+  ph.style.display='none';cursor.style.display='inline-block';
+  const text='Deploy app to GitHub';let i=0;
+  const iv=setInterval(()=>{typed.textContent=text.slice(0,++i);if(i>=text.length){clearInterval(iv);setTimeout(doSubmit,700);}},65);
+}
+function doSubmit(){
+  const btn=document.getElementById('addBtnF');
+  btn.classList.add('clicking');
+  setTimeout(()=>{
+    btn.classList.remove('clicking');
+    const list=document.getElementById('todoList');
+    const nc=document.createElement('div');
+    nc.className='todo-card-f new-card';nc.id='cardNew';
+    nc.innerHTML=`<div class="check-f"></div><div class="todo-body-f"><div class="todo-title-f">Deploy app to GitHub</div><div class="todo-desc-f">Push all code to remote repository</div><div class="todo-footer-f"><span class="todo-date-f">Feb 24</span><span class="todo-pill-f pill-active">Active</span></div></div><div class="todo-actions-f"><div class="act-f">✎</div><div class="act-f">✕</div></div>`;
+    list.insertBefore(nc,list.firstChild);
+    document.getElementById('typedText').textContent='';
+    document.getElementById('inpPlaceholder').style.display='inline';
+    document.getElementById('cursorEl').style.display='none';
+    document.getElementById('fakeInp').classList.remove('active-inp');
+    document.getElementById('addCard').classList.remove('focused');
+    total=6;active=4;updateStats();showToast('toast-add');
+    setTimeout(doComplete,2400);
+  },280);
+}
+function doComplete(){
+  const card=document.getElementById('card2');
+  const check=document.getElementById('check2');
+  const pill=document.getElementById('pill2');
+  check.classList.add('checked');
+  setTimeout(()=>{
+    card.classList.add('done-card');
+    pill.textContent='✓ Done';pill.className='todo-pill-f pill-done';
+    done=3;active=3;updateStats();showToast('toast-done');
+    setTimeout(doFilter,2400);
+  },300);
+}
+function doFilter(){
+  setNav('active');
+  document.querySelectorAll('.done-card').forEach(c=>{
+    c.style.transition='all 0.4s';c.style.opacity='0';c.style.maxHeight='0';c.style.padding='0';c.style.margin='0';c.style.border='none';
+  });
+  setTimeout(()=>{
+    setNav('all');
+    document.querySelectorAll('.todo-card-f').forEach(c=>{
+      c.style.transition='all 0.4s';c.style.opacity='';c.style.maxHeight='';c.style.padding='';c.style.margin='';c.style.border='';
+    });
+    setTimeout(doDelete,1200);
+  },1800);
+}
+function doDelete(){
+  const card=document.getElementById('card3');if(!card)return;
+  const del=card.querySelector('.act-f:last-child');
+  if(del){del.style.background='#fff0f0';del.style.color='#d64040';del.style.borderColor='rgba(214,64,64,0.3)';}
+  setTimeout(()=>{
+    card.classList.add('removing-card');
+    setTimeout(()=>{card.remove();total=5;active=2;updateStats();showToast('toast-del');setTimeout(()=>location.reload(),3500);},380);
+  },500);
+}
+updateStats();
+setTimeout(doTypeTask,1800);
+</script>
+</body>
+</html>
